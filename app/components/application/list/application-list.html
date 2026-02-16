@@ -1,0 +1,194 @@
+<div class="list-wrapper">
+    <!-- Main Content Area -->
+    <div class="list-content">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="header-left">
+                <h4 class="page-title">Registered Applications</h4>
+                <span class="item-count">({{ count }} applications)</span>
+            </div>
+            <div class="header-actions">
+                <div class="view-toggle-compact">
+                    <button class="toggle-icon" [class.active]="viewMode === 'list'" (click)="setViewMode('list')" title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button class="toggle-icon" [class.active]="viewMode === 'card'" (click)="setViewMode('card')" title="Card View">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                </div>
+                <a routerLink="/Admin/Application/Add" class="btn-add-item">
+                    <i class="fas fa-plus"></i>
+                    <span>New Application</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search by App Name..." 
+                           [(ngModel)]="searchTerm" (ngModelChange)="onSearchInput($event)">
+                </div>
+            </div>
+            <button class="btn-clear-sm" *ngIf="searchTerm" (click)="searchTerm = ''; onSearch()">
+                <i class="fas fa-times"></i> Clear
+            </button>
+        </div>
+
+        <!-- Data Table (List View) -->
+        <div class="data-table-wrapper" *ngIf="viewMode === 'list'">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th class="col-app">Application & Description</th>
+                        <th class="col-owner">Ownership</th>
+                        <th class="col-service">Email Service</th>
+                        <th class="col-date">Registry Date (UTC)</th>
+                        <th class="col-status">Lifecycle</th>
+                        <th class="col-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="appList.length === 0">
+                        <td colspan="6" class="empty-row">
+                            <i class="fas fa-folder-open"></i>
+                            <p>No applications found in the inventory.</p>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let item of appList" class="data-row">
+                        <td>
+                            <div class="table-info">
+                                <span class="table-info-primary" [title]="item.appName">{{ item.appName }}</span>
+                                <span class="table-info-secondary text-truncate" [title]="item.description">{{ item.description }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="table-info">
+                                <span class="table-info-primary">
+                                    <i class="fas fa-user-circle owner-icon"></i> {{ item.appOwner }}
+                                </span>
+                                <span class="table-info-secondary">
+                                    <i class="fas fa-at"></i> {{ item.fromEmailAddress }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="service-badge info">
+                                <i class="fas fa-envelope"></i> {{ item.emailServiceName }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="date-cell">{{ item.createdDateTime | date:'MMM dd, yyyy' }}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.active === 1" class="status-badge active">
+                                <i class="fas fa-check-circle"></i> Active
+                            </span>
+                            <div *ngIf="item.active !== 1" class="status-actions">
+                                <span class="status-badge inactive">
+                                    <i class="fas fa-pause-circle"></i> Inactive
+                                </span>
+                                <button class="btn-approve-sm" [disabled]="role !== 'ADMIN'" (click)="showModal(item.id)">
+                                    Approve
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                <a [routerLink]="['/Admin/Application/Edit', item.id]" class="icon-btn orange" title="Edit Application">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Card View -->
+        <div *ngIf="viewMode === 'card'">
+            <div class="empty-state" *ngIf="appList.length === 0">
+                <i class="fas fa-folder-open"></i>
+                <p>No applications found in the inventory.</p>
+            </div>
+            <div class="card-grid" *ngIf="appList.length > 0">
+                <div class="item-card" *ngFor="let item of appList">
+                    <div class="card-header">
+                        <div class="card-info">
+                            <div class="card-info-primary" [title]="item.appName">{{ item.appName }}</div>
+                            <div class="card-info-secondary text-clamp" [title]="item.description">{{ item.description }}</div>
+                        </div>
+                        <span *ngIf="item.active === 1" class="status-badge active">Active</span>
+                        <span *ngIf="item.active !== 1" class="status-badge inactive">Inactive</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-detail">
+                            <i class="fas fa-user-circle"></i>
+                            <span>{{ item.appOwner }}</span>
+                        </div>
+                        <div class="card-detail">
+                            <i class="fas fa-at"></i>
+                            <span class="email-text">{{ item.fromEmailAddress }}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="service-badge info">
+                                <i class="fas fa-envelope"></i> {{ item.emailServiceName }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ item.createdDateTime | date:'MMM dd, yyyy' }}
+                        </span>
+                        <div class="card-actions">
+                            <button *ngIf="item.active !== 1" class="btn-approve-sm" [disabled]="role !== 'ADMIN'" (click)="showModal(item.id)">
+                                Approve
+                            </button>
+                            <a [routerLink]="['/Admin/Application/Edit', item.id]" class="icon-btn orange" title="Edit Application">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+            <app-pagination 
+                [totalCount]="count" 
+                [pageSize]="pageSize" 
+                [currentPage]="currentPage" 
+                (pageChange)="onPageChange($event)">
+            </app-pagination>
+        </div>
+    </div>
+</div>
+
+<!-- Glassmorphism Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content glass-modal">
+            <div class="modal-header">
+                <h6 class="modal-title">Application Approval</h6>
+                <button class="btn-modal-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h6 class="modal-heading">Ready to Approve?</h6>
+                <p class="modal-text">This will enable email delivery capabilities for the selected application.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" type="button" data-bs-dismiss="modal">Discard</button>
+                <button class="btn-modal-confirm" (click)="onClickVerify()">Confirm Approval</button>
+            </div>
+        </div>
+    </div>
+</div>

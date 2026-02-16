@@ -1,0 +1,13 @@
+/* Register Component-Specific Styles */
+
+.bg-gradient-primary-to-secondary {
+    background: linear-gradient(135deg, var(--tp-purple) 0%, var(--tp-magenta) 100%);
+    background-size: cover;
+}
+
+.bg-register-image {
+    background-size: cover;
+    background-position: center;
+    background-image: var(--register-bg-image);
+}
+

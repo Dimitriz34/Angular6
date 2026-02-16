@@ -1,0 +1,574 @@
+/* ========================================
+   LAYOUT - SIDEBAR WIDTH IS THE ONLY SOURCE OF TRUTH
+   ViewEncapsulation.None - styles apply globally
+   All selectors prefixed with app-layout for specificity
+   ======================================== */
+
+/* ========================================
+   SB-ADMIN RESET - Must come first to override sb-admin-2.min.css
+   ======================================== */
+app-layout .sidebar {
+    width: 220px !important;
+    min-width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar {
+    width: 64px !important;
+    overflow: visible !important;
+}
+
+/* Prevent sb-admin's .toggled class from interfering */
+app-layout .sidebar.toggled {
+    width: 64px !important;
+    overflow: visible !important;
+}
+
+/* === VARIABLES === */
+$sidebar-expanded: 220px;
+$sidebar-collapsed: 64px;
+$topbar-height: 56px;
+$transition-speed: 0.25s;
+
+$border-color: #e8e8e8;
+$text-color: #333;
+$text-muted: #666;
+$active-bg: rgba(197, 70, 142, 0.12);
+$active-color: #C5468E;
+$hover-bg: rgba(197, 70, 142, 0.06);
+
+/* === WRAPPER === */
+app-layout {
+    display: block;
+}
+
+app-layout .layout-wrapper {
+    display: block;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* === SIDEBAR === */
+app-layout .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $sidebar-expanded;
+    background: #fff;
+    border-right: 1px solid $border-color;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: width $transition-speed ease;
+    overflow: hidden;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar {
+    width: $sidebar-collapsed;
+}
+
+/* Sidebar Header */
+app-layout .sidebar-header {
+    height: $topbar-height;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid $border-color;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar-header {
+    padding: 0;
+    justify-content: center;
+}
+
+app-layout .sidebar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+app-layout .sidebar-brand:hover {
+    text-decoration: none;
+}
+
+app-layout .brand-logo {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+app-layout .brand-text {
+    margin-left: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: $text-color;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: opacity $transition-speed ease, margin $transition-speed ease;
+}
+
+app-layout .layout-wrapper.collapsed .brand-text {
+    opacity: 0;
+    margin-left: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+/* Sidebar Navigation */
+app-layout .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 0;
+}
+
+app-layout .sidebar .nav-item {
+    margin: 2px 8px;
+    position: relative;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-item {
+    margin: 2px 6px;
+}
+
+app-layout .sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: $text-color;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-link {
+    justify-content: center;
+    padding: 12px 8px;
+}
+
+app-layout .sidebar .nav-link i {
+    width: 20px;
+    min-width: 20px;
+    text-align: center;
+    font-size: 1rem;
+    color: $text-muted;
+    transition: color 0.15s ease;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-link i {
+    font-size: 1.15rem;
+}
+
+app-layout .sidebar .nav-link .nav-text {
+    margin-left: 12px;
+    transition: opacity $transition-speed ease, margin $transition-speed ease;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-link .nav-text {
+    opacity: 0;
+    margin-left: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+app-layout .sidebar .nav-link:hover {
+    background-color: $hover-bg;
+    color: $active-color;
+}
+
+app-layout .sidebar .nav-link:hover i {
+    color: $active-color;
+}
+
+/* Active state */
+app-layout .sidebar .nav-item.active > .nav-link,
+app-layout .sidebar .nav-link.active {
+    background-color: $active-bg;
+    color: $active-color;
+    font-weight: 700;
+}
+
+app-layout .sidebar .nav-item.active > .nav-link i,
+app-layout .sidebar .nav-link.active i {
+    color: $active-color;
+}
+
+/* Dropdown arrow */
+app-layout .sidebar .nav-link[data-toggle="collapse"]::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #999;
+    transition: transform 0.2s ease;
+}
+
+app-layout .sidebar .nav-link[data-toggle="collapse"]:not(.collapsed)::after {
+    transform: rotate(180deg);
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-link[data-toggle="collapse"]::after {
+    display: none;
+}
+
+/* Collapse inner */
+app-layout .sidebar .collapse-inner {
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 6px;
+    margin: 4px 0 0 32px;
+}
+
+app-layout .sidebar .collapse-item {
+    display: block;
+    padding: 8px 12px;
+    color: $text-muted;
+    font-size: 0.825rem;
+    font-weight: 500;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+app-layout .sidebar .collapse-item:hover {
+    background-color: $hover-bg;
+    color: $active-color;
+}
+
+/* Collapsed: floating submenu */
+app-layout .layout-wrapper.collapsed .sidebar .nav-item .collapse {
+    position: absolute;
+    left: $sidebar-collapsed - 6px;
+    top: 0;
+    width: 180px;
+    z-index: 1100;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    display: none !important;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-item .collapse .collapse-inner {
+    margin: 0;
+    padding: 8px;
+    background: transparent;
+}
+
+app-layout .layout-wrapper.collapsed .sidebar .nav-item:hover > .collapse {
+    display: block !important;
+}
+
+/* === MAIN AREA === */
+app-layout .main-area {
+    margin-left: $sidebar-expanded !important;
+    width: calc(100% - $sidebar-expanded) !important;
+    min-height: 100vh;
+    display: flex !important;
+    flex-direction: column;
+    transition: all $transition-speed ease;
+    background: var(--tp-soft-bg, #F8F7FF);
+}
+
+app-layout .layout-wrapper.collapsed .main-area {
+    margin-left: $sidebar-collapsed !important;
+    width: calc(100% - $sidebar-collapsed) !important;
+}
+
+/* === TOPBAR === */
+app-layout .topbar,
+app-layout .layout-wrapper .topbar,
+app-layout header.topbar {
+    position: sticky !important;
+    top: 0 !important;
+    height: $topbar-height !important;
+    min-height: $topbar-height !important;
+    max-height: $topbar-height !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #fff !important;
+    border-bottom: 1px solid $border-color !important;
+    z-index: 900 !important;
+    padding: 0 1rem !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure topbar is visible in collapsed state too */
+app-layout .layout-wrapper.collapsed .topbar,
+app-layout .layout-wrapper.collapsed header.topbar {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+app-layout .hamburger-btn,
+app-layout .topbar .hamburger-btn,
+app-layout button.hamburger-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 50% !important;
+    border: 1px solid #ddd !important;
+    background: #fff !important;
+    color: #555 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+app-layout .hamburger-btn:hover {
+    border-color: #bbb;
+    color: #333;
+    background: #f5f5f5;
+}
+
+app-layout .hamburger-btn:focus {
+    outline: none;
+    border-color: $active-color;
+}
+
+app-layout .hamburger-btn i {
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+/* Ensure hamburger button is visible in collapsed state */
+app-layout .layout-wrapper.collapsed .hamburger-btn,
+app-layout .layout-wrapper.collapsed .topbar .hamburger-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1001 !important;
+}
+
+/* User dropdown */
+app-layout .user-dropdown {
+    position: relative;
+}
+
+app-layout .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+app-layout .dropdown-toggle:hover {
+    background-color: #f5f5f5;
+}
+
+app-layout .user-info {
+    text-align: right;
+}
+
+app-layout .user-email {
+    display: block;
+    color: $text-color;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+app-layout .user-role {
+    display: inline-block;
+    background: var(--tp-soft-bg, #f0f0ff);
+    color: var(--tp-purple, #704294);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+app-layout .profile-img-wrapper {
+    position: relative;
+}
+
+app-layout .profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #eee;
+}
+
+app-layout .status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #28a745;
+    border: 2px solid white;
+}
+
+app-layout .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    min-width: 200px;
+    background: #fff;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+app-layout .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+app-layout .dropdown-header {
+    padding: 12px 16px 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+app-layout .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    color: $text-color;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+app-layout .dropdown-item:hover {
+    background-color: #f5f5f5;
+    text-decoration: none;
+}
+
+app-layout .dropdown-item i {
+    width: 20px;
+    margin-right: 12px;
+    color: #999;
+}
+
+app-layout .dropdown-item.text-danger {
+    color: #ED555A;
+}
+
+app-layout .dropdown-item.text-danger i {
+    color: #ED555A;
+}
+
+app-layout .dropdown-divider {
+    height: 1px;
+    background: $border-color;
+    margin: 4px 0;
+}
+
+/* === CONTENT === */
+app-layout .content-area {
+    flex: 1;
+    width: 100%;
+    padding: 0;
+}
+
+/* Reset any container padding from sb-admin/bootstrap */
+app-layout .content-area .container,
+app-layout .content-area .container-fluid,
+app-layout .content-area .container-lg,
+app-layout .content-area .container-md,
+app-layout .content-area .container-sm,
+app-layout .content-area .container-xl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+}
+
+/* === FOOTER === */
+app-layout .footer {
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: $text-muted;
+    border-top: 1px solid $border-color;
+    background: rgba(255,255,255,0.5);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    app-layout .sidebar {
+        width: $sidebar-collapsed;
+    }
+    
+    app-layout .sidebar-header {
+        padding: 0;
+        justify-content: center;
+    }
+    
+    app-layout .brand-text {
+        opacity: 0;
+        width: 0;
+        margin-left: 0;
+    }
+    
+    app-layout .sidebar .nav-item {
+        margin: 2px 6px;
+    }
+    
+    app-layout .sidebar .nav-link {
+        justify-content: center;
+        padding: 12px 8px;
+    }
+    
+    app-layout .sidebar .nav-link .nav-text {
+        opacity: 0;
+        width: 0;
+        margin-left: 0;
+    }
+    
+    app-layout .sidebar .nav-link[data-toggle="collapse"]::after {
+        display: none;
+    }
+    
+    app-layout .main-area {
+        margin-left: $sidebar-collapsed;
+    }
+    
+    app-layout .user-info {
+        display: none;
+    }
+}
+
+/* Reset sb-admin gradient conflicts */
+.bg-gradient-info {
+    background-image: none !important;
+}

@@ -1,0 +1,22 @@
+.btn-outline-secondary.active {
+    background-color: var(--tp-purple) !important;
+    border-color: var(--tp-purple) !important;
+    color: white !important;
+}
+
+.btn-outline-warning.active {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: white !important;
+}
+
+.flex-fill label {
+    transition: all 0.2s ease;
+    min-height: 80px;
+    cursor: pointer;
+}
+
+.flex-fill label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
