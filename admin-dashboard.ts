@@ -26,6 +26,12 @@ export class AdminDashboardComponent implements OnInit {
   @ViewChild('breakdownChart') breakdownCanvas!: ElementRef<HTMLCanvasElement>;
   private chart: any;
   private pieChart: any;
+  chartType: 'bar' | 'line' = 'bar';
+
+  changeChartType(type: 'bar' | 'line') {
+    this.chartType = type;
+    this.initBreakdownChart();
+  }
 
   get selectedAppName(): string {
     const selected = this.emailCount.find(x => x.appId === this.selectedAppId);
@@ -210,12 +216,11 @@ export class AdminDashboardComponent implements OnInit {
       return;
     }
 
-    // Create gradient colors for a premium look
-    const gradients = labels.map((_, i) => {
+    // Create consistent blue gradient for professional look
+    const gradients = labels.map(() => {
       const g = ctx.createLinearGradient(0, 0, canvas.width, 0);
-      const hue = (i * 37) % 360;
-      g.addColorStop(0, `hsla(${hue}, 85%, 60%, 0.95)`);
-      g.addColorStop(1, `hsla(${(hue + 25) % 360}, 85%, 45%, 0.95)`);
+      g.addColorStop(0, 'rgba(78, 115, 223, 0.55)');
+      g.addColorStop(1, 'rgba(78, 115, 223, 0.95)');
       return g;
     });
 
@@ -227,10 +232,11 @@ export class AdminDashboardComponent implements OnInit {
           label: DASHBOARD_LABELS.BAR_LABEL_SENT_EMAIL,
           data: emails,
           backgroundColor: gradients,
-          borderRadius: 8,
+          hoverBackgroundColor: 'rgba(78, 115, 223, 1)',
+          borderRadius: 6,
           borderSkipped: false,
-          barThickness: 18,
-          maxBarThickness: 22
+          barThickness: 16,
+          maxBarThickness: 20
         }]
       },
       options: {
@@ -238,14 +244,23 @@ export class AdminDashboardComponent implements OnInit {
         maintainAspectRatio: false,
         indexAxis: 'y',
         animation: {
-          duration: 900,
+          duration: 500,
           easing: 'easeOutQuart'
         },
         plugins: {
           tooltip: {
-            enabled: true,
+            backgroundColor: '#1e293b',
+            titleColor: '#e2e8f0',
+            bodyColor: '#fff',
+            borderColor: 'rgba(148, 163, 184, 0.2)',
+            borderWidth: 1,
+            padding: { top: 10, bottom: 10, left: 14, right: 14 },
+            cornerRadius: 8,
+            titleFont: { size: 11, weight: 'normal' },
+            bodyFont: { size: 13, weight: 'bold' },
+            displayColors: false,
             callbacks: {
-              label: (context: any) => ` Total: ${context.parsed.x.toLocaleString()}`
+              label: (context: any) => `${context.parsed.x.toLocaleString()} emails`
             }
           },
           legend: {
@@ -258,19 +273,28 @@ export class AdminDashboardComponent implements OnInit {
         },
         scales: {
           x: {
-            grid: {
-              color: 'rgba(0,0,0,0.05)'
-            },
+            border: { display: false },
+            grid: { color: 'rgba(0, 0, 0, 0.04)', drawTicks: false },
             ticks: {
-              color: '#6c757d'
+              color: '#94a3b8',
+              font: { size: 10 },
+              padding: 4,
+              maxTicksLimit: 6,
+              callback: function(value: any) {
+                if (value >= 1000) return (value / 1000).toFixed(0) + 'k';
+                return value;
+              }
             }
           },
           y: {
+            border: { display: false },
             grid: {
               display: false
             },
             ticks: {
-              color: '#343a40'
+              color: '#475569',
+              font: { size: 11, weight: '500' },
+              padding: 4
             }
           }
         }
@@ -309,36 +333,93 @@ export class AdminDashboardComponent implements OnInit {
       selected.yearlyEmail || 0
     ];
 
-    const baseColors = [
-      'rgba(54, 162, 235, 0.9)',
-      'rgba(255, 206, 86, 0.9)',
-      'rgba(75, 192, 192, 0.9)',
-      'rgba(153, 102, 255, 0.9)',
-      'rgba(255, 99, 132, 0.9)'
-    ];
+    // Create gradient for line chart
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, 'rgba(78, 115, 223, 0.3)');
+    gradient.addColorStop(1, 'rgba(78, 115, 223, 0.01)');
+
+    // Create gradient for bar chart
+    const barGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    barGradient.addColorStop(0, 'rgba(78, 115, 223, 0.95)');
+    barGradient.addColorStop(1, 'rgba(78, 115, 223, 0.55)');
 
     this.pieChart = new Chart(ctx, {
-      type: 'doughnut',
+      type: this.chartType,
       data: {
         labels,
         datasets: [{
+          label: 'Emails Sent',
           data,
-          backgroundColor: baseColors,
-          borderColor: '#ffffff',
-          borderWidth: 2
+          backgroundColor: this.chartType === 'line' ? gradient : barGradient,
+          borderColor: 'rgba(78, 115, 223, 1)',
+          borderWidth: this.chartType === 'line' ? 2.5 : 0,
+          borderRadius: this.chartType === 'bar' ? 6 : 0,
+          borderSkipped: false,
+          fill: this.chartType === 'line',
+          tension: 0.35,
+          pointRadius: this.chartType === 'line' ? 4 : 0,
+          pointHoverRadius: this.chartType === 'line' ? 6 : 0,
+          pointBackgroundColor: 'rgba(78, 115, 223, 1)',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          barPercentage: 0.65,
+          categoryPercentage: 0.7
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '58%',
+        animation: {
+          duration: 500,
+          easing: 'easeOutQuart'
+        },
         plugins: {
-          legend: {
-            position: 'bottom'
-          },
+          legend: { display: false },
           tooltip: {
+            backgroundColor: '#1e293b',
+            titleColor: '#e2e8f0',
+            bodyColor: '#fff',
+            borderColor: 'rgba(148, 163, 184, 0.2)',
+            borderWidth: 1,
+            padding: { top: 10, bottom: 10, left: 14, right: 14 },
+            cornerRadius: 8,
+            titleFont: { size: 11, weight: 'normal' },
+            bodyFont: { size: 13, weight: 'bold' },
+            displayColors: false,
             callbacks: {
-              label: (context: any) => ` ${context.label}: ${context.parsed.toLocaleString()}`
+              title: (items: any) => items[0].label,
+              label: (context: any) => `${context.parsed.y.toLocaleString()} emails`
+            }
+          }
+        },
+        scales: {
+          x: {
+            border: { display: false },
+            grid: { display: false },
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 10, weight: '500' },
+              padding: 4,
+              maxRotation: 0,
+              autoSkip: false
+            }
+          },
+          y: {
+            border: { display: false },
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.04)',
+              drawTicks: false
+            },
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 10 },
+              padding: 8,
+              maxTicksLimit: 5,
+              callback: function(value: any) {
+                if (value >= 1000) return (value / 1000).toFixed(0) + 'k';
+                return value;
+              }
             }
           }
         }

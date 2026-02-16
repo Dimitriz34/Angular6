@@ -124,7 +124,7 @@
         <i class="fa fa-bars"></i>
       </button>
 
-      <!-- TP Assist Global Search -->
+      <!-- TP Assist Global Search (commented out)
       <div class="tpassist-search flex-grow-1 mx-3 position-relative" [class.open]="isSearchOpen">
         <button class="btn btn-light border d-flex align-items-center px-3 py-2 w-100 text-start" 
                 style="max-width: 400px; border-radius: 8px;" 
@@ -134,12 +134,10 @@
           <span class="text-muted small flex-grow-1">Search TP Mailer...</span>
         </button>
 
-        <!-- Search Modal -->
         <div class="position-absolute bg-white rounded shadow-lg p-0" 
              style="top: 45px; left: 0; width: 100%; max-width: 500px; z-index: 1050; max-height: 70vh; overflow: hidden;"
              *ngIf="isSearchOpen">
           
-          <!-- Search Input -->
           <div class="d-flex align-items-center border-bottom px-3 py-2">
             <i class="fas fa-search text-muted me-3"></i>
             <input 
@@ -161,10 +159,8 @@
             </button>
           </div>
 
-          <!-- Search Results -->
           <div class="overflow-auto" style="max-height: calc(70vh - 60px);">
             
-            <!-- Help/Info Full Answer (when a help suggestion is clicked or high confidence) -->
             <div class="p-3" *ngIf="searchResponse?.success && searchResponse?.isHelpResponse">
               <div class="d-flex align-items-start mb-2">
                 <span class="badge me-2" style="background-color: #6f42c1; color: white;"><i class="fas fa-lightbulb me-1"></i>{{ searchResponse!.category || 'Answer' }}</span>
@@ -189,7 +185,6 @@
               </div>
             </div>
 
-            <!-- Direct Navigation Result (single strong match) -->
             <div class="list-group list-group-flush" *ngIf="searchResponse?.success && searchResponse?.route && !searchResponse?.isHelpResponse">
               <a class="list-group-item list-group-item-action d-flex align-items-center py-3 bg-light border-start border-primary border-4"
                  href="javascript:void(0)"
@@ -203,20 +198,17 @@
               </a>
             </div>
 
-            <!-- Message (no matches found) -->
             <div class="alert alert-light m-3 d-flex align-items-center" *ngIf="searchResponse && !searchResponse.success">
               <i class="fas fa-info-circle text-muted me-2"></i>
               <span class="text-muted">{{ searchResponse.message }}</span>
             </div>
 
-            <!-- Suggestions List (smart predictions as user types) -->
             <div *ngIf="searchResponse?.success && searchResponse?.suggestions?.length && !searchResponse?.isHelpResponse && !searchResponse?.route">
               <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action d-flex align-items-center py-2"
                    href="javascript:void(0)"
                    *ngFor="let suggestion of searchResponse!.suggestions"
                    (click)="onSuggestionClick(suggestion)">
-                  <!-- Icon based on type -->
                   <i class="me-3" 
                      [ngClass]="{
                        'fas fa-question-circle text-info': suggestion.type === 'help',
@@ -231,13 +223,11 @@
               </div>
             </div>
 
-            <!-- Help text (only when empty) -->
             <div class="text-center py-4 text-muted" *ngIf="!searchQuery && !searchResponse">
               <i class="fas fa-keyboard me-1"></i>
               <span class="small">Type to search features or ask "How do I..."</span>
             </div>
 
-            <!-- Powered by TP Assist -->
             <div class="border-top px-3 py-2 d-flex align-items-center justify-content-center bg-light">
               <small class="text-muted">
                 <i class="fas fa-bolt text-warning me-1"></i>
@@ -247,6 +237,7 @@
           </div>
         </div>
       </div>
+      -->
 
       <div class="user-dropdown" [class.open]="isUserDropdownOpen">
         <div class="dropdown-toggle" (click)="toggleUserDropdown($event)">
