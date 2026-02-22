@@ -1,0 +1,69 @@
+<div class="container-fluid animate-fade-in py-2">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom py-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-primary fw-bold">Email Service Lookup List</h5>
+                <a routerLink="/Admin/Lookup/EmailServices/Add" class="btn btn-sm btn-primary shadow-sm px-2">
+                    <i class="fas fa-plus me-2"></i>Add Email Service
+                </a>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-secondary">
+                        <tr>
+                            <th width="35%" class="py-2 smallest">Service Name</th>
+                            <th width="20%" class="py-2 smallest">Type</th>
+                            <th width="25%" class="py-2 smallest">Date Created</th>
+                            <th width="20%" class="py-2 smallest">Status</th>
+                            <!-- <th width="10%" class="text-end py-2 smallest">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of emailServices" class="hover-elevate">
+                            <td class="py-2">
+                                <div class="fw-bold text-dark smallest">{{item.serviceName}}</div>
+                            </td>
+                            <td class="py-2">
+                                <span *ngIf="item.type === 'PREMIUM'" class="badge bg-warning-soft text-warning border border-warning-subtle smallest py-1">
+                                    <i class="fas fa-crown me-1"></i> PREMIUM
+                                </span>
+                                <span *ngIf="item.type !== 'PREMIUM'" class="badge bg-secondary-soft text-secondary border border-secondary-subtle smallest py-1">
+                                    FREE
+                                </span>
+                            </td>
+                            <td class="py-2">
+                                <div class="smallest text-muted">Jan 20, 2025</div>
+                            </td>
+                            <td class="py-2">
+                                <span *ngIf="item.active" class="badge rounded-pill bg-success-soft text-success border border-success-subtle smallest py-1">
+                                    <i class="fas fa-check-circle me-1"></i> Active
+                                </span>
+                                <span *ngIf="!item.active" class="badge rounded-pill bg-danger-soft text-danger border border-danger-subtle smallest py-1">
+                                    <i class="fas fa-times-circle me-1"></i> Inactive
+                                </span>
+                            </td>
+                            <!-- Edit button commented out
+                            <td class="text-end py-2">
+                                <a [routerLink]="['/Admin/Lookup/EmailServices/Edit', item.id]" class="btn btn-xs btn-light border shadow-sm btn-hover-primary py-0">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </a>
+                            </td>
+                            -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-2">
+                <app-pagination 
+                    [totalCount]="count" 
+                    [pageSize]="pageSize" 
+                    [currentPage]="currentPage" 
+                    (pageChange)="onPageChange($event)">
+                </app-pagination>
+            </div>
+        </div>
+    </div>
+</div>

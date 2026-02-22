@@ -1,0 +1,60 @@
+﻿-- Drop all stored procedures
+IF OBJECT_ID(N'dbo.commit_activitylog', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_activitylog];
+IF OBJECT_ID(N'dbo.commit_application', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_application];
+IF OBJECT_ID(N'dbo.commit_approveapp', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_approveapp];
+IF OBJECT_ID(N'dbo.commit_deleteuser', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_deleteuser];
+IF OBJECT_ID(N'dbo.commit_email', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_email];
+IF OBJECT_ID(N'dbo.commit_emailattachment', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_emailattachment];
+IF OBJECT_ID(N'dbo.commit_emailrecipient', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_emailrecipient];
+IF OBJECT_ID(N'dbo.commit_emailstatus', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_emailstatus];
+IF OBJECT_ID(N'dbo.commit_errorlog', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_errorlog];
+IF OBJECT_ID(N'dbo.commit_insertrefreshtoken', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_insertrefreshtoken];
+IF OBJECT_ID(N'dbo.commit_loginaudit', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_loginaudit];
+IF OBJECT_ID(N'dbo.commit_refreshtoken', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_refreshtoken];
+IF OBJECT_ID(N'dbo.commit_revokerefreshtoken', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_revokerefreshtoken];
+IF OBJECT_ID(N'dbo.commit_secretlog', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_secretlog];
+IF OBJECT_ID(N'dbo.commit_updatesecret', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_updatesecret];
+IF OBJECT_ID(N'dbo.commit_user', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_user];
+IF OBJECT_ID(N'dbo.commit_userrole', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_userrole];
+IF OBJECT_ID(N'dbo.commit_userroleupdate', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_userroleupdate];
+IF OBJECT_ID(N'dbo.commit_verifyuser', N'P') IS NOT NULL DROP PROCEDURE [dbo].[commit_verifyuser];
+IF OBJECT_ID(N'dbo.nlog_addentryp', N'P') IS NOT NULL DROP PROCEDURE [dbo].[nlog_addentryp];
+IF OBJECT_ID(N'dbo.sel_activitylog', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_activitylog];
+IF OBJECT_ID(N'dbo.sel_application', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_application];
+IF OBJECT_ID(N'dbo.sel_applicationcount', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_applicationcount];
+IF OBJECT_ID(N'dbo.sel_email', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_email];
+IF OBJECT_ID(N'dbo.sel_emailattachment', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_emailattachment];
+IF OBJECT_ID(N'dbo.sel_emailcount', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_emailcount];
+IF OBJECT_ID(N'dbo.sel_emaildetail', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_emaildetail];
+IF OBJECT_ID(N'dbo.sel_emailrecipient', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_emailrecipient];
+IF OBJECT_ID(N'dbo.sel_keyconfig', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_keyconfig];
+IF OBJECT_ID(N'dbo.sel_keyconfigall', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_keyconfigall];
+IF OBJECT_ID(N'dbo.sel_refreshtokenbyid', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_refreshtokenbyid];
+IF OBJECT_ID(N'dbo.sel_role', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_role];
+IF OBJECT_ID(N'dbo.sel_topfiveappsutilisation', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_topfiveappsutilisation];
+IF OBJECT_ID(N'dbo.sel_toptenapps', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_toptenapps];
+IF OBJECT_ID(N'dbo.sel_user', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_user];
+IF OBJECT_ID(N'dbo.sel_userapplication', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_userapplication];
+IF OBJECT_ID(N'dbo.sel_usercount', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_usercount];
+IF OBJECT_ID(N'dbo.sel_userrole', N'P') IS NOT NULL DROP PROCEDURE [dbo].[sel_userrole];
+GO
+
+-- Drop all tables (order respects dependencies)
+IF OBJECT_ID(N'dbo.tpm_nlog', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_nlog];
+IF OBJECT_ID(N'dbo.tpm_refreshtoken', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_refreshtoken];
+IF OBJECT_ID(N'dbo.tpm_ticket', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_ticket];
+IF OBJECT_ID(N'dbo.tpm_notification', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_notification];
+IF OBJECT_ID(N'dbo.tpm_secretupdate', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_secretupdate];
+IF OBJECT_ID(N'dbo.tpm_loginaudit', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_loginaudit];
+IF OBJECT_ID(N'dbo.tpm_activitylog', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_activitylog];
+IF OBJECT_ID(N'dbo.tpm_errorlog', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_errorlog];
+IF OBJECT_ID(N'dbo.tpm_emailattachment', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_emailattachment];
+IF OBJECT_ID(N'dbo.tpm_emailrecipient', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_emailrecipient];
+IF OBJECT_ID(N'dbo.tpm_email', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_email];
+IF OBJECT_ID(N'dbo.tpm_application', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_application];
+IF OBJECT_ID(N'dbo.tpm_userrole', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_userrole];
+IF OBJECT_ID(N'dbo.tpm_user', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_user];
+IF OBJECT_ID(N'dbo.tpm_logtype', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_logtype];
+IF OBJECT_ID(N'dbo.tpm_role', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_role];
+IF OBJECT_ID(N'dbo.tpm_keyconfig', N'U') IS NOT NULL DROP TABLE [dbo].[tpm_keyconfig];
+GO

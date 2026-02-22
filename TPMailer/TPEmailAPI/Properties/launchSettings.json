@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "TPEmailAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:7187;http://localhost:7188"
+    }
+  }
+}
